@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Main {
 
@@ -16,6 +17,18 @@ public class Main {
         table.EnterSymbol("a", Type.FLOAT);
         table.EnterSymbol("b", Type.INTEGER);
         table.EnterSymbol("a", Type.FLOATDCL);
+
+        Main main = new Main();
+
+        Node child1test = new Node(DataType.INTEGER, "55", "int Consting", null, null);
+        Node child2test = new Node(DataType.FLOAT, "0.55", "float Consting", null, null);
+        Node computingtest = new Node(DataType.FLOAT, "a", "computing", child1test, child2test);
+        Node assigningtest = new Node(DataType.FLOAT, "b", "assigning", child1test, child2test);
+        Node symReferencingtest = new Node(DataType.FLOAT, "c", "symReferencing", child1test, child2test);
+
+        main.visit(computingtest);
+        main.visit(assigningtest);
+        main.visit(symReferencingtest);
     }
 
     private static String Peek(Scanner s) {
@@ -156,5 +169,72 @@ public class Main {
             return nextToken;
         }
         return " ";
+    }
+
+    public HashMap<String, DataType> symbolTable = new HashMap<>();
+
+    public void visit(Node node) {
+        if (node.getName().equals("Computing")) {
+            node.setType(consistent(node.getChild1(), node.getChild2()));
+        } else if (node.getName().equals("Assigning")) {
+            node.setType(convert(node.getChild2(), node.getChild1().getType()));
+        } else if (node.getName().equals("SymReferencing")) {
+            node.setType(lookupSymbol(node.getId()));
+        } else if (node.getName().equals("IntConsting")) {
+            node.setType(DataType.INTEGER);
+        } else if (node.getName().equals("FloatConsting")) {
+            node.setType(DataType.FLOAT);
+        } else if (node.getName().equals("FloatDeclaration")) {
+            node.setType(DataType.FLOATDCL);
+        }
+    }
+
+    public DataType consistent(Node node1, Node node2) {
+        DataType type1 = node1.getType();
+        DataType type2 = node2.getType();
+        if (type1 == DataType.FLOAT || type2 == DataType.FLOAT) {
+            if (type1 == DataType.INTEGER) {
+                convert(node1, DataType.FLOAT);
+            }
+            if (type2 == DataType.INTEGER) {
+                convert(node2, DataType.FLOAT);
+            }
+            return DataType.FLOAT;
+        } else {
+            return DataType.INTEGER;
+        }
+    }
+
+    public DataType convert(Node node, DataType type) {
+        if (node.getType() == DataType.FLOAT && type == DataType.INTEGER) {
+            throw new IllegalArgumentException("Illegal type conversion");
+        } else if (node.getType() == DataType.INTEGER && type == DataType.FLOAT) {
+            return DataType.FLOAT; // replace node n by convert-to-float of node n
+        } else {
+            return null;
+        }
+    }
+    public static DataType generalize(DataType t1, DataType t2) {
+        if (t1 == DataType.FLOAT || t2 == DataType.FLOAT) {
+            return DataType.FLOAT;
+        } else {
+            return DataType.INTEGER;
+        }
+    }
+
+    public DataType lookupSymbol(String name) {
+        return symbolTable.get(name);
+    }
+
+    // use an instance method to enter symbols
+    public void enterSymbol(String name, DataType type) {
+        if (type == null) {
+            throw new NullPointerException("Type cannot be null");
+        }
+        if (symbolTable.containsKey(name)) {
+            throw new IllegalArgumentException("Symbol '" + name + "' already exists in the SymbolTable");
+        }
+        symbolTable.put(name, type);
+        System.out.println("[" + name + ", " + "] successfully added");
     }
 }

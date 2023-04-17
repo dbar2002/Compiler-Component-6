@@ -6,6 +6,11 @@ public class Main {
         String a = "i 5 f 30 p 55 a 23";
         scanner(a);
 
+        Scanner Stmt_scanner1 = new Scanner("src/inputs/Stmt.txt");
+        Scanner Stmts_scanner2 = new Scanner("src/inputs/Stmts.txt");
+
+        Stmt(Stmt_scanner1);
+        Stmts(Stmts_scanner2);
     }
 
     private static String Peek(Scanner s) {
@@ -95,5 +100,56 @@ public class Main {
                 lexicalError();
         }
         return ans;
+    }
+
+    //Statement
+    public static void Stmt(Scanner s) {
+        String nextToken = peek(s);
+
+        if (nextToken.equals("id")) {
+            match(s.next(), "id");
+            match(s.next(), "assign");
+
+            System.out.println("Val");
+            System.out.println("Expr");
+
+        } else if (nextToken.equals("print")) {
+            match(s.next(), "print");
+            match(s.next(), "id");
+
+        } else {
+            System.out.println("Stmt ERROR");
+        }
+    }
+
+    //Statements
+    public static void Stmts(Scanner scanner) {
+
+        String nextToken = peek(scanner);
+
+        if (nextToken.equals("id") || nextToken.equals("print")){
+            Stmt(scanner);
+            Stmts(scanner);
+
+        } else if (nextToken.equals(" ")) {
+
+        } else {
+            System.out.println("Stmts ERROR");
+        }
+
+    }
+
+    //match function
+    public static boolean match(String word, String input) {
+        return word.equals(input);
+    }
+
+    //peek function
+    private static String peek(Scanner s) {
+        if (s.hasNext()) {
+            String nextToken = s.next();
+            return nextToken;
+        }
+        return " ";
     }
 }

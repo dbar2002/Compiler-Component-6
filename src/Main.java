@@ -4,11 +4,11 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String a = "i 5 f 30 p 55 a 23";
+        String a = "src/inputs/program1.txt";
         scanner(a);
 
-        Scanner Stmt_scanner1 = new Scanner("src/inputs/Stmt.txt");
-        Scanner Stmts_scanner2 = new Scanner("src/inputs/Stmts.txt");
+        Scanner Stmt_scanner1 = new Scanner("src/inputs/program1.txt");
+        Scanner Stmts_scanner2 = new Scanner("src/inputs/program1.txt");
 
         Stmt(Stmt_scanner1);
         Stmts(Stmts_scanner2);

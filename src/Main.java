@@ -11,6 +11,11 @@ public class Main {
 
         Stmt(Stmt_scanner1);
         Stmts(Stmts_scanner2);
+
+        SymbolTable table = new SymbolTable();
+        table.EnterSymbol("a", Type.FLOAT);
+        table.EnterSymbol("b", Type.INTEGER);
+        table.EnterSymbol("a", Type.FLOATDCL);
     }
 
     private static String Peek(Scanner s) {

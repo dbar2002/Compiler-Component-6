@@ -1,9 +1,10 @@
 class Node {
-    private DataType t;
-    private String id;
-    private String name;
-    private Node child1;
-    private Node child2;
+    public DataType t;
+    public String id;
+    public String name;
+    public Node child1;
+    public Node child2;
+    public boolean val;
 
     public Node(DataType type, String id, String name, Node child1, Node child2) {
         this.t = type;

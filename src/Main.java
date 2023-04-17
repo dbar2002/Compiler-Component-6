@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception {
         String a = "i 5 f 30 p 55 a 23";
         scanner(a);
 
@@ -26,9 +26,11 @@ public class Main {
         Node assigningtest = new Node(DataType.FLOAT, "b", "assigning", child1test, child2test);
         Node symReferencingtest = new Node(DataType.FLOAT, "c", "symReferencing", child1test, child2test);
 
-        main.visit(computingtest);
-        main.visit(assigningtest);
-        main.visit(symReferencingtest);
+        main.visit(computingtest, "Computing");
+        main.visit(assigningtest, "Assigning");
+        main.visit(symReferencingtest, "SymReferencing");
+
+
     }
 
     private static String Peek(Scanner s) {
@@ -173,20 +175,42 @@ public class Main {
 
     public HashMap<String, DataType> symbolTable = new HashMap<>();
 
-    public void visit(Node node) {
-        if (node.getName().equals("Computing")) {
-            node.setType(consistent(node.getChild1(), node.getChild2()));
-        } else if (node.getName().equals("Assigning")) {
-            node.setType(convert(node.getChild2(), node.getChild1().getType()));
-        } else if (node.getName().equals("SymReferencing")) {
-            node.setType(lookupSymbol(node.getId()));
-        } else if (node.getName().equals("IntConsting")) {
-            node.setType(DataType.INTEGER);
-        } else if (node.getName().equals("FloatConsting")) {
-            node.setType(DataType.FLOAT);
-        } else if (node.getName().equals("FloatDeclaration")) {
-            node.setType(DataType.FLOATDCL);
+    public static void visit(Node node, String s) throws Exception {
+        if (s.equals("Assigning")) {
+            codeGen(node.child2);
+            System.out.println("s");
+            System.out.println(node.child1.id);
+            System.out.println("0 k");
         }
+
+        if (s.equals("Computing")) {
+            codeGen(node.child1);
+            codeGen(node.child2);
+            System.out.println();
+        }
+
+        if (s.equals("SymReferencing")) {
+            System.out.println("1");
+            System.out.println(node.id);
+        }
+        if (s.equals("Printing")) {
+            System.out.println("1");
+            System.out.println(node.id);
+            System.out.println("p");
+            System.out.println("si");
+        }
+        if (s.equals("Converting")) {
+            System.out.println(node.id);
+            System.out.println("5 k");
+        }
+        if (s.equals("Consting")) {
+            System.out.println(node.val);
+
+        }
+    }
+
+    public static void codeGen(Node node) throws Exception {
+
     }
 
     public DataType consistent(Node node1, Node node2) {

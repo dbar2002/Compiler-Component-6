@@ -1,8 +1,8 @@
 import java.util.Scanner;
 import java.util.HashMap;
 
-public class Main {
 
+public class Main {
     public static void main(String[] args) throws Exception {
         String a = "src/inputs/program1.txt";
         scanner(a);
@@ -29,8 +29,6 @@ public class Main {
         main.visit(computingtest, "Computing");
         main.visit(assigningtest, "Assigning");
         main.visit(symReferencingtest, "SymReferencing");
-
-
     }
 
     private static String Peek(Scanner s) {
@@ -42,7 +40,6 @@ public class Main {
     }
 
     public static void lexicalError() {
-
         System.out.println("LEXICAL ERROR THROWN");
     }
 
@@ -51,9 +48,9 @@ public class Main {
         Scanner s = new Scanner(stream);
         int i = 0;
 
-        String t = Peek(s);
+        String t = peek(s);
         while (s.hasNext()) {
-            t = Peek(s);
+            t = peek(s);
             s.next();
         }
         Token ans = new Token();
